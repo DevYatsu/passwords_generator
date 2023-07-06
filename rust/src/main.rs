@@ -1,5 +1,5 @@
 use rand::seq::SliceRandom;
-use rand::{thread_rng, Rng};
+use rand::Rng;
 
 use std::fs::File;
 use std::io::{BufWriter, Write};
@@ -51,8 +51,7 @@ fn generate_password() -> Vec<u8> {
         password[i] = get_random_char(&all_characters) as u8;
     }
 
-    let mut rng: rand::rngs::ThreadRng = thread_rng();
-    password.shuffle(&mut rng);
+    password.shuffle(&mut rand::thread_rng());
     password.into_iter().collect()
 }
 
