@@ -8,8 +8,7 @@ TARGET_FILE = "passwords.txt"
 
 
 def get_random_char(characters):
-    random_index = random.randint(0, len(characters) - 1)
-    return characters[random_index]
+    return random.choice(characters)
 
 
 def timer(fn):
@@ -28,19 +27,19 @@ def generate_password():
     uppercase_letters = string.ascii_uppercase
     digits = string.digits
     special_characters = string.punctuation
-    all_characters = lowercase_letters + \
-        uppercase_letters + digits + special_characters
+    all_characters = "".join(
+        [lowercase_letters, uppercase_letters, digits, special_characters])
 
     if PASSWORDS_LENGTH < 4:
         raise ValueError("passwords_length must be at least 4")
 
     # Generate a random password
     password = [
-        random.choice(lowercase_letters),
-        random.choice(uppercase_letters),
-        random.choice(digits),
-        random.choice(special_characters)
-    ] + [random.choice(all_characters) for _ in range(PASSWORDS_LENGTH - 4)]
+        get_random_char(lowercase_letters),
+        get_random_char(uppercase_letters),
+        get_random_char(digits),
+        get_random_char(special_characters)
+    ] + [get_random_char(all_characters) for _ in range(PASSWORDS_LENGTH - 4)]
 
     random.shuffle(password)
     password_str = ''.join(password)
@@ -49,10 +48,9 @@ def generate_password():
 
 
 def write_passwords(filename: str, passwords: list[str]):
+    content = '\n'.join(passwords)
     with open(filename, "w") as file:
-        writer = file.buffer
-        writer.writelines(
-            (password.encode() + b"\n" for password in passwords))
+        file.write(content)
 
     print(f"Passwords successfully written in {filename}")
 
