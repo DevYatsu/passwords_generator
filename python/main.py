@@ -2,7 +2,7 @@ import random
 import string
 import time
 passwords_length = 10
-number_to_generate = 100000
+number_to_generate = 1000000
 target_file = "passwords.txt"
 
 
