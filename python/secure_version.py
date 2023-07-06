@@ -5,9 +5,11 @@ PASSWORDS_LENGTH = 10
 NUMBER_TO_GENERATE = 100000
 TARGET_FILE = "passwords.txt"
 
+secure_random = random.SystemRandom()
+
 
 def get_random_char(characters):
-    random_index = random.randint(0, len(characters) - 1)
+    random_index = secure_random.randint(0, len(characters) - 1)
     return characters[random_index]
 
 
@@ -50,8 +52,8 @@ def generate_password():
 def write_passwords(filename: str, passwords: list[str]):
     with open(filename, "w") as file:
         writer = file.buffer
-        writer.writelines(
-            (password.encode() + b"\n" for password in passwords))
+        for password in passwords:
+            writer.write(password.encode() + b"\n")
 
     print(f"Passwords successfully written in {filename}")
 
