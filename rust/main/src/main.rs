@@ -66,7 +66,9 @@ fn write_passwords(filename: &str, passwords: &[Vec<u8>]) {
     let mut writer: BufWriter<File> = BufWriter::with_capacity(65536, file);
 
     for password in passwords {
-        writer.write_all(password).expect("Failed to write password");
+        writer
+            .write_all(password)
+            .expect("Failed to write password");
         writer.write_all(b"\n").expect("Failed to write newline");
     }
 
@@ -74,7 +76,7 @@ fn write_passwords(filename: &str, passwords: &[Vec<u8>]) {
 
     println!("Passwords successfully written in {}", filename);
 }
- 
+
 fn generate_x_passwords(filename: &str, num: usize) {
     let passwords: Vec<Vec<u8>> = (0..num)
         .into_par_iter()

@@ -1,13 +1,13 @@
 use getrandom::getrandom;
-use rand::thread_rng;
 use rand::seq::SliceRandom;
+use rand::thread_rng;
 
 use std::fs::File;
 use std::io::{BufWriter, Write};
 use std::time::Instant;
 
-use std::str;
 use rayon::prelude::*;
+use std::str;
 
 const PASSWORDS_LENGTH: usize = 10;
 const NUMBER_TO_GENERATE: usize = 1_000_000;
@@ -73,7 +73,9 @@ fn write_passwords(filename: &str, passwords: &[Vec<u8>]) {
     let mut writer: BufWriter<File> = BufWriter::with_capacity(65536, file);
 
     for password in passwords {
-        writer.write_all(password).expect("Failed to write password");
+        writer
+            .write_all(password)
+            .expect("Failed to write password");
         writer.write_all(b"\n").expect("Failed to write newline");
     }
 
