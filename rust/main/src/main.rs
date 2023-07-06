@@ -40,50 +40,41 @@ fn generate_password() -> Vec<u8> {
     let all_characters: String =
         lowercase_letters.to_owned() + uppercase_letters + digits + special_characters;
 
-    let mut password: [u8; PASSWORDS_LENGTH] = [0; PASSWORDS_LENGTH];
+    let mut rng = rand::thread_rng();
+    let mut password: Vec<u8> = Vec::with_capacity(PASSWORDS_LENGTH);
 
-    password[0] = get_random_char(lowercase_letters) as u8;
-    password[1] = get_random_char(uppercase_letters) as u8;
-    password[2] = get_random_char(digits) as u8;
-    password[3] = get_random_char(special_characters) as u8;
+    password.push(get_random_char(&lowercase_letters, &mut rng) as u8);
+    password.push(get_random_char(&uppercase_letters, &mut rng) as u8);
+    password.push(get_random_char(&digits, &mut rng) as u8);
+    password.push(get_random_char(&special_characters, &mut rng) as u8);
 
-    for i in 4..PASSWORDS_LENGTH {
-        password[i] = get_random_char(&all_characters) as u8;
+    for _ in 4..PASSWORDS_LENGTH {
+        password.push(get_random_char(&all_characters, &mut rng) as u8);
     }
 
-    password.shuffle(&mut rand::thread_rng());
-    password.into_iter().collect()
+    password.shuffle(&mut rng);
+    password
 }
 
-fn get_random_char(characters: &str) -> char {
-    let random_index: usize = get_random_index(characters.len());
+fn get_random_char(characters: &str, rng: &mut rand::rngs::ThreadRng) -> char {
+    let random_index = rng.gen_range(0..characters.len());
     characters.chars().nth(random_index).unwrap()
-}
-
-fn get_random_index(upper_bound: usize) -> usize {
-    let mut rng: rand::rngs::ThreadRng = rand::thread_rng();
-    rng.gen_range(0..upper_bound)
 }
 
 fn write_passwords(filename: &str, passwords: &[Vec<u8>]) {
     let file = File::create(filename).expect("Failed to create file");
-    let mut writer = BufWriter::with_capacity(65536, file);
-
-    let mut buffer: Vec<u8> = Vec::with_capacity(NUMBER_TO_GENERATE * PASSWORDS_LENGTH);
+    let mut writer = BufWriter::new(file);
 
     for password in passwords {
-        buffer.extend(password);
-        buffer.push(b'\n');
+        writer.write_all(password).expect("Failed to write password");
+        writer.write_all(b"\n").expect("Failed to write newline");
     }
-
-    let password_str = str::from_utf8(&buffer).expect("Failed to convert to string");
-
-    writer.write_all(password_str.as_bytes()).expect("Failed to write passwords");
 
     writer.flush().expect("Failed to flush buffer");
 
     println!("Passwords successfully written in {}", filename);
 }
+ 
 
 
 fn generate_x_passwords(filename: &str, num: usize) {
