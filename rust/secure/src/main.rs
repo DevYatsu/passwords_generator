@@ -28,7 +28,7 @@ fn timer<F: Fn()>(f: F) {
     f();
     let end = Instant::now();
     println!(
-        "function execution: {} seconds",
+        "code execution: {} seconds",
         (end - start).as_secs_f64()
     );
 }

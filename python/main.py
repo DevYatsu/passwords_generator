@@ -3,7 +3,7 @@ import string
 import time
 
 PASSWORDS_LENGTH = 10
-NUMBER_TO_GENERATE = 500000
+NUMBER_TO_GENERATE = 5_000_000
 TARGET_FILE = "passwords.txt"
 
 
