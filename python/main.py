@@ -1,8 +1,9 @@
 import random
 import string
 import time
+
 PASSWORDS_LENGTH = 10
-NUMBER_TO_GENERATE = 100000
+NUMBER_TO_GENERATE = 500000
 TARGET_FILE = "passwords.txt"
 
 
@@ -35,11 +36,11 @@ def generate_password():
 
     # Generate a random password
     password = [
-        get_random_char(lowercase_letters),
-        get_random_char(uppercase_letters),
-        get_random_char(digits),
-        get_random_char(special_characters)
-    ] + [get_random_char(all_characters) for _ in range(4, PASSWORDS_LENGTH)]
+        random.choice(lowercase_letters),
+        random.choice(uppercase_letters),
+        random.choice(digits),
+        random.choice(special_characters)
+    ] + [random.choice(all_characters) for _ in range(PASSWORDS_LENGTH - 4)]
 
     random.shuffle(password)
     password_str = ''.join(password)
@@ -59,7 +60,6 @@ def write_passwords(filename: str, passwords: list[str]):
 @timer
 def generate_x_passwords(filename: str, num: int):
     passwords = [generate_password() for _ in range(num)]
-
     write_passwords(filename, passwords)
 
 

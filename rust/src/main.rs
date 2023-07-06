@@ -9,7 +9,7 @@ use rayon::prelude::*;
 use std::str;
 
 const PASSWORDS_LENGTH: usize = 10;
-const NUMBER_TO_GENERATE: usize = 100000;
+const NUMBER_TO_GENERATE: usize = 500000;
 const FILE_NAME: &str = "passwords.txt";
 
 fn main() {
@@ -57,11 +57,11 @@ fn generate_password() -> Vec<u8> {
 }
 
 fn get_random_char(characters: &str) -> char {
-    let random_index: usize = getrandom_index(characters.len());
+    let random_index: usize = get_random_index(characters.len());
     characters.chars().nth(random_index).unwrap()
 }
 
-fn getrandom_index(upper_bound: usize) -> usize {
+fn get_random_index(upper_bound: usize) -> usize {
     let mut rng: rand::rngs::ThreadRng = rand::thread_rng();
     rng.gen_range(0..upper_bound)
 }
