@@ -9,7 +9,7 @@ use rayon::prelude::*;
 use std::str;
 
 const PASSWORDS_LENGTH: usize = 10;
-const NUMBER_TO_GENERATE: usize = 500000;
+const NUMBER_TO_GENERATE: usize = 1_000_000;
 const FILE_NAME: &str = "passwords.txt";
 
 fn main() {
@@ -41,15 +41,15 @@ fn generate_password() -> Vec<u8> {
         lowercase_letters.to_owned() + uppercase_letters + digits + special_characters;
 
     let mut rng = rand::thread_rng();
-    let mut password: Vec<u8> = Vec::with_capacity(PASSWORDS_LENGTH);
+    let mut password = vec![0; PASSWORDS_LENGTH];
 
-    password.push(get_random_char(&lowercase_letters, &mut rng) as u8);
-    password.push(get_random_char(&uppercase_letters, &mut rng) as u8);
-    password.push(get_random_char(&digits, &mut rng) as u8);
-    password.push(get_random_char(&special_characters, &mut rng) as u8);
+    password[0] = get_random_char(&lowercase_letters, &mut rng) as u8;
+    password[1] = get_random_char(&uppercase_letters, &mut rng) as u8;
+    password[2] = get_random_char(&digits, &mut rng) as u8;
+    password[3] = get_random_char(&special_characters, &mut rng) as u8;
 
-    for _ in 4..PASSWORDS_LENGTH {
-        password.push(get_random_char(&all_characters, &mut rng) as u8);
+    for i in 4..PASSWORDS_LENGTH {
+        password[i] = get_random_char(&all_characters, &mut rng) as u8;
     }
 
     password.shuffle(&mut rng);
@@ -63,7 +63,7 @@ fn get_random_char(characters: &str, rng: &mut rand::rngs::ThreadRng) -> char {
 
 fn write_passwords(filename: &str, passwords: &[Vec<u8>]) {
     let file = File::create(filename).expect("Failed to create file");
-    let mut writer = BufWriter::new(file);
+    let mut writer: BufWriter<File> = BufWriter::with_capacity(65536, file);
 
     for password in passwords {
         writer.write_all(password).expect("Failed to write password");
@@ -75,8 +75,6 @@ fn write_passwords(filename: &str, passwords: &[Vec<u8>]) {
     println!("Passwords successfully written in {}", filename);
 }
  
-
-
 fn generate_x_passwords(filename: &str, num: usize) {
     let passwords: Vec<Vec<u8>> = (0..num)
         .into_par_iter()
