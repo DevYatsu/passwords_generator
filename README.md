@@ -13,13 +13,14 @@ Each folder contains the following scripts:
 
 ### Rust
 
-- `main/main.rs`: This script generates a chosen number of passwords with a chosen length as quickly as possible.
-- `secure/main.rs`: This script generates the most secure passwords using system generation, but it might be slower than the main.rs script.
+- `main/main.rs`: Generates a chosen number of passwords with a chosen length as quickly as possible.
+- `secure/main.rs`: Generates the most secure passwords using system generation, but it might be slower than the main.rs script.
+- `simplified/main.rs`: Generates passwords after prompting for number to generate, length of passwords and target file name (based on main.rs).
 
 ### Python
 
-- `main.py`: This script generates a chosen number of passwords with a chosen length as quickly as possible.
-- `secure.py`: This script generates the most secure passwords using system generation, but it might be slower than the main.py script.
+- `main.py`: Generates a chosen number of passwords with a chosen length as quickly as possible.
+- `secure.py`: Generates the most secure passwords using system generation, but it might be slower than the main.py script.
 
 ## Performance Measurements
 
@@ -31,6 +32,7 @@ Based on performance measurements, the time taken to generate and write password
 - `secure.py`: Approximately 11.80 seconds
 - `main.rs`: Approximately 2.70 seconds
 - `secure.rs`: Approximately 3.80 seconds
+- `simplified.rs`: Approximately 9.60 seconds
 
 ### Generating 1,000,000 Passwords of Length 10
 
@@ -38,6 +40,7 @@ Based on performance measurements, the time taken to generate and write password
 - `secure.py`: Approximately 23.60 seconds
 - `main.rs`: Approximately 5.30 seconds
 - `secure.rs`: Approximately 7.20 seconds
+- `simplified.rs`: Approximately 20 seconds
 
 Please note that these measurements are based on the specific testing conditions and may vary depending on the hardware, software environment, and other factors.
 
