@@ -1,0 +1,12 @@
+[package]
+name = "rust"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+getrandom = "0.2.10"
+rand = "0.8.5"
+rayon = "1.7.0"
+dialoguer = "0.10.4"
